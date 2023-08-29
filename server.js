@@ -1,6 +1,6 @@
 const express = require('express');
 const mysql = require('mysql2');
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 const app = express();
 
 
@@ -20,12 +20,6 @@ const db = mysql.createConnection(
   },
   console.log(`Connected to the company_db database.`)
 );
-
-// Query database
-// db.query('SELECT * FROM role', function (err, results) {
-//   console.table(results);
-// });
-
 
 app.use((req, res) => {
   res.status(404).end();

@@ -1,13 +1,16 @@
-import inquirer from "inquirer";
+import inquirer from "inquirer"
 import pkg from '../server.js'
 const db = pkg;
-import pkg2 from './functions.js'
-const departmentChoices = pkg2
 
+
+//Activates prompt that will persist until user is finished with all tasks. 
 
 async function prompt() {
 
+    
     let mainMenu = await inquirer
+
+    //Main Menu. Options will loop up until user selects 'Quit'.
 
         .prompt([
 
@@ -21,12 +24,16 @@ async function prompt() {
 
         ])
 
+        //Pulls department table data from mySQL database.
+
     if (mainMenu.option_choice === "View departments") {
         db.query('SELECT * FROM department', function (err, results) {
             console.table(results);
             prompt()
 
         });
+
+        //Pulls role table data from mySQL database.
 
     } else if (mainMenu.option_choice === "View roles") {
         const mysql = `select role.id, role.title, role.salary, name as department_name from department inner join role
@@ -36,6 +43,8 @@ async function prompt() {
             prompt()
         });
 
+        //Pulls employee table data from mySQL database.
+
     } else if (mainMenu.option_choice === "View employees") {
         const mysql = `select employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name as department, employee.manager_id as manager from employee inner join role 
         on employee.role_id = role.id inner join department on department.id = role.department_id order by employee.id`
@@ -43,6 +52,8 @@ async function prompt() {
             console.table(results);
             prompt()
         });
+
+        //Takes user input an adds a new department to 'department' table.
 
     } else if (mainMenu.option_choice === "Add a department") {
         let addDept = await inquirer
@@ -62,6 +73,7 @@ async function prompt() {
             prompt()
         });
 
+        //Takes user input an adds a new role to 'role' table.
 
     } else if (mainMenu.option_choice === "Add a role") {
         let addRole = await inquirer
@@ -80,7 +92,7 @@ async function prompt() {
                     type: 'list',
                     name: 'department_name',
                     message: 'Please choose a department',
-                    choices: [{ name: "Operations", value: 1 }, { name: "Accounting", value: 2 }, { name: "Legal", value: 3 }, { name: "Marketing", value: 4 }]                    
+                    choices: [{ name: "Operations", value: 1 }, { name: "Accounting", value: 2 }, { name: "Legal", value: 3 }, { name: "Marketing", value: 4 }]
                 }
 
             ])
@@ -96,6 +108,8 @@ async function prompt() {
                 prompt()
             }
         });
+
+        //Takes user input an adds a new employee to 'employee' table.
 
     } else if (mainMenu.option_choice === "Add an employee") {
         let addEmployee = await inquirer
@@ -136,6 +150,7 @@ async function prompt() {
             prompt()
         });
 
+        //Changes existing role of employee.
 
     } else if (mainMenu.option_choice === "Update an employee role") {
         let update = await inquirer
@@ -144,8 +159,9 @@ async function prompt() {
                     type: 'list',
                     name: 'employee',
                     message: 'Please select and employee',
-                    choices: [{ name: "Shield Escovedo", value: 5 }, { name: "Daniel Kaluuya", value: 6 }, { name: "Alex Murphy", value: 7 }, { name: "Patti Harrison", value: 8 }, { name: "John Goodman", value: 9 }, { name: "Trent Reznor", value: 10 }]
-                },
+                    choices: [{ name: "Walton Goggins", value: 1 },{ name: "Edie Falco", value: 2 },{ name: "Nathan Fielder", value: 3 },{ name: "Dolly Parton", value: 4},{ name: "Shiela Escovedo", value: 5 }, { name: "Daniel Kaluuya", value: 6 }, { name: "Alex Murphy", value: 7 }, { name: "Patti Harrison", value: 8 }, { name: "John Goodman", value: 9 }, { name: "Trent Reznor", value: 10 }, { name: "Jeremy White", value: 11 }, { name: "Ayo Edebiri", value: 12 }, { name: "William Friedkin", value: 13 }, { name: "Taika Waititi", value: 14 }]
+                }
+                ,
                 {
                     type: 'list',
                     name: 'role',
@@ -166,7 +182,10 @@ async function prompt() {
             prompt()
         });
 
+        //Terminates prompt and sends user back to terminal. 
+
     } else if (mainMenu.option_choice === "Quit") {
+        console.log("Goodbye.")
         process.exit(0);
     }
 

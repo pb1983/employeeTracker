@@ -32,5 +32,5 @@ VALUES ("Walton", "Goggins", 1, NULL),
 	   ("Ayo", "Edebiri", 8, 4),
 	   ("William", "Friedkin", 8, 4),
 	   ("Taika", "Waititi", 9, 4),
-	   ("Wendy", "Peffercorn", 9, 4)
+	  
  ;
